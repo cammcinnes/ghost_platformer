@@ -1,7 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://bk0j2qu3h5r7x"]
+[gd_scene load_steps=5 format=3 uid="uid://bk0j2qu3h5r7x"]
 
 [ext_resource type="PackedScene" uid="uid://bhir0fnccfti5" path="res://scenes/character/player.tscn" id="1_7n2f0"]
+[ext_resource type="Texture2D" uid="uid://dk130qhh5pnq3" path="res://graphics/white.png" id="2_hupbc"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aptlb"]
+texture = ExtResource("2_hupbc")
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_7ii8r"]
+sources/0 = SubResource("TileSetAtlasSource_aptlb")
 
 [node name="world" type="Node"]
 
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 643.0
+offset_bottom = 323.0
+color = Color(0, 0, 0, 1)
+
 [node name="player" parent="." instance=ExtResource("1_7n2f0")]
+position = Vector2(45, 27)
+
+[node name="TileMap" type="TileMap" parent="."]
+position = Vector2(320, 160)
+tile_set = SubResource("TileSet_7ii8r")
+format = 2
+layer_0/tile_data = PackedInt32Array(131054, 0, 0, 131055, 0, 0, 131056, 0, 0, -393226, 0, 0, -327690, 0, 0, -262154, 0, 0, -196618, 0, 0, -131082, 0, 0, -65546, 0, 0, -10, 0, 0, 65526, 0, 0, 131062, 0, 0, 196598, 0, 0, 262134, 0, 0, 327670, 0, 0, 393206, 0, 0, 393205, 0, 0, 458741, 0, 0, 524277, 0, 0, 589813, 0, 0, 655349, 0, 0, 393209, 0, 0, 393210, 0, 0, 458746, 0, 0, 524282, 0, 0, 589818, 0, 0, 655354, 0, 0, 327673, 0, 0, 262137, 0, 0, 196601, 0, 0, 131065, 0, 0, 65529, 0, 0, -7, 0, 0, -65543, 0, 0, -131079, 0, 0, -196615, 0, 0, -262151, 0, 0, -327687, 0, 0, -393223, 0, 0, -393224, 0, 0, -393225, 0, 0)
