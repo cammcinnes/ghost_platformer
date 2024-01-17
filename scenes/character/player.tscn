@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bhir0fnccfti5"]
+[gd_scene load_steps=6 format=3 uid="uid://bhir0fnccfti5"]
 
 [ext_resource type="Texture2D" uid="uid://4wbnp3u05hn4" path="res://graphics/player.png" id="1_ce1es"]
+[ext_resource type="Script" path="res://scripts/character/player.gd" id="1_uawmd"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gg7j7"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_d6f4v"]
 atlas = ExtResource("1_ce1es")
 region = Rect2(0, 0, 16, 16)
 
@@ -10,23 +11,23 @@ region = Rect2(0, 0, 16, 16)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gg7j7")
+"texture": SubResource("AtlasTexture_d6f4v")
 }],
 "loop": true,
 "name": &"default",
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_rulob"]
-radius = 2.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e32do"]
+size = Vector2(4, 2)
 
 [node name="player" type="CharacterBody2D"]
+floor_stop_on_slope = false
+script = ExtResource("1_uawmd")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_scwlm")
 
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(0, 2)
-shape = SubResource("CircleShape2D_rulob")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_e32do")
