@@ -1,17 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://bhir0fnccfti5"]
+[gd_scene load_steps=9 format=3 uid="uid://bhir0fnccfti5"]
 
 [ext_resource type="Script" path="res://scripts/character/player.gd" id="1_uawmd"]
 [ext_resource type="Texture2D" uid="uid://b0bgrowabod8f" path="res://graphics/player-Sheet.png" id="2_6llnl"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gu4un"]
-atlas = ExtResource("2_6llnl")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_35urt"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_edeww"]
 atlas = ExtResource("2_6llnl")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_pqtp7"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_wf0u4"]
 atlas = ExtResource("2_6llnl")
 region = Rect2(64, 0, 32, 32)
 
@@ -27,18 +23,25 @@ region = Rect2(0, 0, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gu4un")
+"texture": SubResource("AtlasTexture_edeww")
+}],
+"loop": false,
+"name": &"charge_jump_2",
+"speed": 1.0
 }, {
+"frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_35urt")
+"texture": SubResource("AtlasTexture_wf0u4")
+}],
+"loop": false,
+"name": &"charge_jump_3",
+"speed": 5.0
 }, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pqtp7")
-}, {
+"frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_atn5g")
 }],
-"loop": true,
+"loop": false,
 "name": &"jump",
 "speed": 5.0
 }, {
@@ -46,7 +49,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_lexwh")
 }],
-"loop": true,
+"loop": false,
 "name": &"walk",
 "speed": 5.0
 }]
@@ -60,8 +63,17 @@ script = ExtResource("1_uawmd")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_scwlm")
-animation = &"walk"
+animation = &"charge_jump_3"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_e32do")
+
+[node name="charge_1_to_2" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="charge_2_to_3" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="timeout" from="charge_1_to_2" to="." method="_on_charge_1_to_2_timeout"]
+[connection signal="timeout" from="charge_2_to_3" to="." method="_on_charge_2_to_3_timeout"]
