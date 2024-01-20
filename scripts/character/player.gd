@@ -2,11 +2,14 @@ extends CharacterBody2D
 
 
 const SPEED = 75.0
+const HORZ_JUMP_VELOCITY = 150
 const JUMP_VELOCITY = -300.0
 const ACCELERATION = 600
 const FRICTION = 1000
 var JUMP_TIMER = 1
 var chargeJump = false
+var direction = 0
+var jumping = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -15,10 +18,12 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 func _physics_process(delta):
 	apply_gravity(delta)
 	handle_jump()
-	var input_axis = Input.get_axis("left", "right")
-	handle_acceleration(input_axis, delta)
-	apply_friction(input_axis, delta)
+	if not jumping:
+		var input_axis = Input.get_axis("left", "right")
+		handle_acceleration(input_axis, delta)
+		apply_friction(input_axis, delta)
 	move_and_slide()
+	handle_direction_animation()
 	
 
 func apply_gravity(delta):
@@ -26,7 +31,8 @@ func apply_gravity(delta):
 		velocity.y += gravity * delta
 
 func handle_jump():
-	if is_on_floor():   
+	if is_on_floor():
+		jumping = false   
 		if Input.is_action_just_pressed("jump"):
 			if not chargeJump:
 				$jump2.start()
@@ -42,6 +48,7 @@ func handle_jump():
 			JUMP_TIMER = 1
 			chargeJump = false
 	else:
+		jumping = true
 		if Input.is_action_just_released("jump") and velocity.y < JUMP_VELOCITY / 2:
 			velocity.y = JUMP_VELOCITY / 2
 			
@@ -57,21 +64,30 @@ func handle_acceleration(input_axis, delta):
 func handle_jump_height():
 	if JUMP_TIMER == 1:
 		velocity.y = JUMP_VELOCITY / 2
+		velocity.x = direction * HORZ_JUMP_VELOCITY / 3
 	elif JUMP_TIMER == 2:
 		velocity.y = JUMP_VELOCITY / 1.5
+		velocity.x = direction * HORZ_JUMP_VELOCITY * 2/3
 	elif JUMP_TIMER == 3:
 		velocity.y = JUMP_VELOCITY
+		velocity.x = direction * HORZ_JUMP_VELOCITY
 
 
 func _on_jump_2_timeout():
 	JUMP_TIMER = 2
 	$AnimatedSprite2D.play("charge_jump_2")
 	$jump2.stop()
-	print("jump2")
 
 
 func _on_jump_3_timeout():
 	JUMP_TIMER = 3
 	$AnimatedSprite2D.play("charge_jump_3")
 	$jump3.stop()
-	print("jump3")
+	
+func handle_direction_animation():
+	if velocity.x > 0:
+		direction = 1
+	if velocity.x < 0:
+		direction = -1
+	if velocity.x > 0 or velocity.x < 0:
+		$AnimatedSprite2D.flip_h = direction > 0
