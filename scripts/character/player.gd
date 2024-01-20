@@ -10,6 +10,7 @@ var JUMP_TIMER = 1
 var chargeJump = false
 var direction = 0
 var jumping = false
+var movedWhileJumpCharge = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -20,6 +21,7 @@ func _physics_process(delta):
 	handle_jump()
 	if not jumping:
 		var input_axis = Input.get_axis("left", "right")
+		get_if_player_moved()
 		handle_acceleration(input_axis, delta)
 		apply_friction(input_axis, delta)
 	move_and_slide()
@@ -34,12 +36,13 @@ func handle_jump():
 	if is_on_floor():
 		jumping = false   
 		if Input.is_action_just_pressed("jump"):
+			movedWhileJumpCharge = false
 			if not chargeJump:
 				$jump2.start()
 				$jump3.start()
 				chargeJump = true
 		
-		if Input.is_action_just_released("jump"):
+		if Input.is_action_just_released("jump") and chargeJump:
 			handle_jump_height()
 			$AnimatedSprite2D.play("jump")
 			$AnimatedSprite2D.play("walk")
@@ -47,6 +50,11 @@ func handle_jump():
 			$jump3.stop()
 			JUMP_TIMER = 1
 			chargeJump = false
+		if movedWhileJumpCharge:
+			$jump2.stop()
+			$jump3.stop()
+			chargeJump = false
+			movedWhileJumpCharge = false
 	else:
 		jumping = true
 		if Input.is_action_just_released("jump") and velocity.y < JUMP_VELOCITY / 2:
@@ -91,3 +99,7 @@ func handle_direction_animation():
 		direction = -1
 	if velocity.x > 0 or velocity.x < 0:
 		$AnimatedSprite2D.flip_h = direction > 0
+
+func get_if_player_moved():
+	if Input.is_action_just_pressed("left") or Input.is_action_just_pressed("right"):
+		movedWhileJumpCharge = true 

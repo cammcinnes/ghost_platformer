@@ -75,5 +75,7 @@ shape = SubResource("RectangleShape2D_e32do")
 [node name="jump3" type="Timer" parent="."]
 wait_time = 2.0
 
+[node name="Camera2D" type="Camera2D" parent="."]
+
 [connection signal="timeout" from="jump2" to="." method="_on_jump_2_timeout"]
 [connection signal="timeout" from="jump3" to="." method="_on_jump_3_timeout"]

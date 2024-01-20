@@ -14,7 +14,7 @@ color = Color(0, 0, 0, 1)
 [node name="platform" type="StaticBody2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="platform"]
-polygon = PackedVector2Array(0, 0, 16, 0, 16, 48, 48, 48, 48, 120, 160, 120, 176, 96, 192, 96, 192, 120, 256, 120, 256, 96, 280, 96, 280, 0, 320, 0, 320, 184, 0, 184)
+polygon = PackedVector2Array(-128, 0, 16, 0, 16, 48, 48, 48, 48, 120, 160, 120, 176, 96, 192, 96, 192, 120, 256, 120, 256, 96, 280, 96, 280, 0, 424, 0, 424, 216, -128, 216)
 
 [node name="Polygon2D" type="Polygon2D" parent="platform/CollisionPolygon2D"]
 
