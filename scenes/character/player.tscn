@@ -63,17 +63,17 @@ script = ExtResource("1_uawmd")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_scwlm")
-animation = &"charge_jump_3"
+animation = &"walk"
+autoplay = "walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_e32do")
 
-[node name="charge_1_to_2" type="Timer" parent="."]
-wait_time = 0.5
+[node name="jump2" type="Timer" parent="."]
 
-[node name="charge_2_to_3" type="Timer" parent="."]
-wait_time = 0.5
+[node name="jump3" type="Timer" parent="."]
+wait_time = 2.0
 
-[connection signal="timeout" from="charge_1_to_2" to="." method="_on_charge_1_to_2_timeout"]
-[connection signal="timeout" from="charge_2_to_3" to="." method="_on_charge_2_to_3_timeout"]
+[connection signal="timeout" from="jump2" to="." method="_on_jump_2_timeout"]
+[connection signal="timeout" from="jump3" to="." method="_on_jump_3_timeout"]

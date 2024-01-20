@@ -5,7 +5,8 @@ const SPEED = 75.0
 const JUMP_VELOCITY = -300.0
 const ACCELERATION = 600
 const FRICTION = 1000
-var JUMP_CHARGE = 1
+var JUMP_TIMER = 1
+var chargeJump = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -27,13 +28,19 @@ func apply_gravity(delta):
 func handle_jump():
 	if is_on_floor():   
 		if Input.is_action_just_pressed("jump"):
-			$charge_1_to_2.start()
-			
+			if not chargeJump:
+				$jump2.start()
+				$jump3.start()
+				chargeJump = true
+		
 		if Input.is_action_just_released("jump"):
 			handle_jump_height()
-			JUMP_CHARGE = 1
 			$AnimatedSprite2D.play("jump")
 			$AnimatedSprite2D.play("walk")
+			$jump2.stop()
+			$jump3.stop()
+			JUMP_TIMER = 1
+			chargeJump = false
 	else:
 		if Input.is_action_just_released("jump") and velocity.y < JUMP_VELOCITY / 2:
 			velocity.y = JUMP_VELOCITY / 2
@@ -48,21 +55,23 @@ func handle_acceleration(input_axis, delta):
 		velocity.x = move_toward(velocity.x, SPEED * input_axis, ACCELERATION * delta)
 
 func handle_jump_height():
-	match JUMP_CHARGE:
-		1:
-			velocity.y = JUMP_VELOCITY / 4
-		2:
-			velocity.y = JUMP_VELOCITY / 2
-		3:
-			velocity.y = JUMP_VELOCITY
+	if JUMP_TIMER == 1:
+		velocity.y = JUMP_VELOCITY / 2
+	elif JUMP_TIMER == 2:
+		velocity.y = JUMP_VELOCITY / 1.5
+	elif JUMP_TIMER == 3:
+		velocity.y = JUMP_VELOCITY
 
-func _on_charge_1_to_2_timeout():
+
+func _on_jump_2_timeout():
+	JUMP_TIMER = 2
 	$AnimatedSprite2D.play("charge_jump_2")
-	JUMP_CHARGE = 2
-	$charge_2_to_3.start()
-	
+	$jump2.stop()
+	print("jump2")
 
 
-func _on_charge_2_to_3_timeout():
+func _on_jump_3_timeout():
+	JUMP_TIMER = 3
 	$AnimatedSprite2D.play("charge_jump_3")
-	JUMP_CHARGE = 3
+	$jump3.stop()
+	print("jump3")
