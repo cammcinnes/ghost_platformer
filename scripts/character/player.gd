@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 const SPEED = 75.0
 const HORZ_JUMP_VELOCITY = 150
-const JUMP_VELOCITY = -300.0
+const JUMP_VELOCITY = -400.0
 const ACCELERATION = 600
 const FRICTION = 1000
 var JUMP_TIMER = 1
